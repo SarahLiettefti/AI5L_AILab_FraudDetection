@@ -2,7 +2,7 @@
 name = "ai5l-ailab-frauddetection"
 version = "0.1.0"
 description = ""
-authors = ["Nikola Mitrovic <nikola.mitrovic@student.ecam.be>"]
+authors = ["NMI <nikola.mitrovic@spaceapplications.com>"]
 readme = "README.md"
 packages = [{include = "ai5l_ailab_frauddetection"}]
 
@@ -11,9 +11,9 @@ python = "^3.9"
 pandas = "^2.0.0"
 torch = "^2.0.0"
 numpy = "^1.24.2"
-sklearn = "^0.0.post1"
 matplotlib = "^3.7.1"
 notebook = "^6.5.4"
+scikit-learn = "^1.2.2"
 
 
 [build-system]
