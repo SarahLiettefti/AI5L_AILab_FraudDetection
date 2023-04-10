@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "ai5l-ailab-frauddetection"
+version = "0.1.0"
+description = ""
+authors = ["Nikola Mitrovic <nikola.mitrovic@student.ecam.be>"]
+readme = "README.md"
+packages = [{include = "ai5l_ailab_frauddetection"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^2.0.0"
+torch = "^2.0.0"
+numpy = "^1.24.2"
+sklearn = "^0.0.post1"
+matplotlib = "^3.7.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
