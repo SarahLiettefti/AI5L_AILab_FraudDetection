@@ -16,6 +16,21 @@ def score_dataset(X_train, X_valid, y_train, y_valid):#fucntion to test but have
     preds = model.predict(X_valid)
     return mean_absolute_error(y_valid, preds)
 
+def week_of_month(dt):
+    """
+    Returns the week of the month for the specified date.
+    """
+    first_day = dt.replace(day=1)
+
+    dom = dt.day
+    week_day = first_day.weekday()#monday = 0
+    adjusted_dom = dom + week_day
+    
+    if week_day>=5:
+        return int(ceil(adjusted_dom/7.0)) - 1
+    else:
+        return int(ceil(adjusted_dom/7.0))
+    
 def delete_col_unique_val(X):
     """
     Delete the columns with unique values
@@ -31,22 +46,7 @@ def delete_col_unique_val(X):
     print(f'The colomns : {cols_unique_value} have only one value and have been dropped')
 
     X.drop(cols_unique_value, axis=1, inplace=True)
-    return X, cols_unique_value
-
-def week_of_month(dt):
-    """
-    Returns the week of the month for the specified date.
-    """
-    first_day = dt.replace(day=1)
-
-    dom = dt.day
-    week_day = first_day.weekday()#monday = 0
-    adjusted_dom = dom + week_day
-    
-    if week_day>=5:
-        return int(ceil(adjusted_dom/7.0)) - 1
-    else:
-        return int(ceil(adjusted_dom/7.0))
+    return X
 
 def adding_date_col(X, date_col):
     """
@@ -77,3 +77,20 @@ def added_column(describe):
     describe.reset_index(inplace=True)
     describe.drop(['index'], axis=1, inplace=True) #Only the features data
     return describe
+
+def TransactionIdToIndex(data):
+    data[['dc', 'new_index']] = data.TransactionId.str.split("_", expand = True)
+    data.drop(['dc','TransactionId'], inplace=True, axis=1)
+    data.rename(columns={"new_index": "TransactionId"}, inplace=True)
+    data.set_index('TransactionId', inplace=True)
+    return data
+
+def composed_string_to_id(column_name, data):
+    """
+    For columns with value e.g. : BatchId_345
+    To transform into 345
+    """
+    data[['dc', 'new_col']] = data[column_name].str.split("_", expand = True)
+    data.drop(['dc','column_name'], inplace=True, axis=1)
+    data.rename(columns={"new_col": "column_name"}, inplace=True)
+    return data
