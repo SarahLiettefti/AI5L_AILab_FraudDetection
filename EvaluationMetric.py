@@ -52,9 +52,6 @@ def initreportcsv():
 
 def showreportcsv():
     df = pd.read_csv('evaluationmetric.csv')
-    print(df)
     df.drop("Unnamed: 0", axis=1, inplace = True)
-    print(df.dtypes)
-    print(f'columns : {df.columns}')
     df.drop_duplicates(subset=["Model", "Description","Precision","Recall","F1-score","Mcc"], keep='last', inplace = True) 
     return df
