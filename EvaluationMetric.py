@@ -55,3 +55,14 @@ def showreportcsv():
     df.drop("Unnamed: 0", axis=1, inplace = True)
     df.drop_duplicates(subset=["Model", "Description","Precision","Recall","F1-score","Mcc"], keep='last', inplace = True) 
     return df
+
+def getscoring(model, X_test, name_file = "resultsfile.csv"):
+    preds_val = model.predict(X_test)
+    index_val = list(X_test.index.values.tolist())
+    data = {'TransactionId': index_val,
+            'FraudResult': preds_val}
+
+    df = pd.DataFrame(data)
+
+    df.to_csv(name_file, index=False)
+    print("Done")
