@@ -51,9 +51,11 @@ class pre_processing:
             self.data[['dc', 'new_col']] = self.data[col].str.split("_", expand = True)
             self.data.drop(['dc',col], inplace=True, axis=1)
             self.data.rename(columns={"new_col": col}, inplace=True)
+            self.data[col] = self.data[col].astype('int')
             self.X_test[['dc', 'new_col']] = self.X_test[col].str.split("_", expand = True)
             self.X_test.drop(['dc',col], inplace=True, axis=1)
-            self.X_test.rename(columns={"new_col": col}, inplace=True)	
+            self.X_test.rename(columns={"new_col": col}, inplace=True)
+            self.X_test[col] = self.X_test[col].astype('int')
         
         #Data splitting
         self.y = self.data.FraudResult #The target label

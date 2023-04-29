@@ -1,5 +1,6 @@
 from sklearn.metrics import confusion_matrix, log_loss, matthews_corrcoef
 import pandas as pd
+import numpy as np
 
 def precision(val_y, pred_y):
     cm = confusion_matrix(val_y, pred_y)
@@ -43,6 +44,19 @@ def report(val_y, pred_y, model, description, csvw = False):
         newdf.to_csv('evaluationmetric.csv', mode='a', header=False)      
     return newdf
 
+def listmetrics(val_y, pred_y, model, description):
+    prec = precision(val_y, pred_y)
+    re = recall(val_y, pred_y)
+    f1 = f1score(val_y, pred_y)
+    log = logloss(val_y, pred_y)
+    mc = mcc(val_y, pred_y)
+    d = [model, description, pd.Timestamp.now(), prec, re, f1, log, mc, np.nan, np.nan]
+    return d
+
+def listmetricsintodf(liste):
+    df = pd.DataFrame(liste, columns=['Model', 'Description', 'Date', 'Precision', 'Recall','F1-score','LogLoss','Mcc','PublicScore','PrivateScore'])
+    return df
+
 
 def initreportcsv():
     d = {'Model': ["None"], 'Description': ['Table init'], 'Date':[pd.Timestamp.now()],
@@ -66,3 +80,6 @@ def getscoring(model, X_test, name_file = "resultsfile.csv"):
 
     df.to_csv(name_file, index=False)
     print("Done")
+    
+def testcode():
+    print("codebien")

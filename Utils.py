@@ -78,7 +78,7 @@ def added_column(describe):
     describe.drop(['index'], axis=1, inplace=True) #Only the features data
     return describe
 
-def TransactionIdToIndex(data):
+def transactioId_to_index(data):
     data[['dc', 'new_index']] = data.TransactionId.str.split("_", expand = True)
     data.drop(['dc','TransactionId'], inplace=True, axis=1)
     data.rename(columns={"new_index": "TransactionId"}, inplace=True)
@@ -94,3 +94,13 @@ def composed_string_to_id(column_name, data):
     data.drop(['dc','column_name'], inplace=True, axis=1)
     data.rename(columns={"new_col": "column_name"}, inplace=True)
     return data
+
+def getscoreforcsv(index_val, preds_val, name_file = "resultsfile.csv"):
+    data = {'TransactionId': index_val,
+        'FraudResult': preds_val}
+
+    df = pd.DataFrame(data)
+
+    df.to_csv(name_file, index=False)
+    print("done")
+    return df
