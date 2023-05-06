@@ -100,7 +100,8 @@ def getscoreforcsv(index_val, preds_val, name_file = "resultsfile.csv"):
         'FraudResult': preds_val}
 
     df = pd.DataFrame(data)
+    n = f'output/{name_file}'
 
-    df.to_csv(name_file, index=False)
+    df.to_csv(n, index=False)
     print("done")
     return df
