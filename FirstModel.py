@@ -19,4 +19,4 @@ first_model_decision_tree.fit(X, y)
 print("Making predictions for the following 5 data:")
 print(X.head())
 print("The predictions are")
-print(first_model_decision_tree.predict(X.head()))
+print(first_model_decision_tree.predict(X.head()))ore
