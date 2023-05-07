@@ -22,6 +22,7 @@ Files to deal with later :
 
 L'évaluation des MI du feature  dans EvaluationFeatures.ipynb
 
+
 # Introduction
 
 In today's digital age, the rapid growth of online transactions has brought about an alarming increase in financial fraud. Detecting fraudulent transactions is crucial to maintain the security and trust of customers and financial institutions. The objective of this report is to provide an in-depth analysis and evaluation of machine learning models for the Xente Fraud Detection Challenge, a dataset containing transaction data from Xente, an e-commerce platform in Africa.
@@ -36,7 +37,9 @@ Case of binary classification
 
 ## Specificity of the dataset
 The training dataset is unbalanced, meaning that there is a minority class that is significantly  less represented in the dataset than the other class. Int this case, the minority class is the Fraud with only 193 data compared to 95469 non-fraud one. Although this is expected in real-life scenarios, it can lead to an overly sensitive model towards the majority class and produce biased and inaccurate predictions.
+
 ![](https://hackmd.io/_uploads/BJhusXBN3.png)
+
 To address this issue, we have two main options:
 1. Using a **model** that take into account the imbalanced data by assigning weights to each class. Setting a positive weight for a class increases the penalty for misclassifying instances of that class during training, making the model pay more attention to the minority class and potentially improving its ability to correctly classify instances of that class. Random Forest and XGBoost are examples of such models that will be used. The optimal positive weight is 22. It was calculates by the square root of the number of non-fraude in the dataset divided by the frauds. Several weights have been tested in the SecondModels.ipynb script, and this one had the best performances.
 2. **Sampling** the dataset to balance the number of instances in each class. There are two types of sampling methods: **undersampling** and **oversampling**. **Undersampling** involves removing instances from the majority class, but this may not perform well when the remaining data is not sufficient for the model to learn from. In this case, it only left us with 386 instances which is not enough. The result from the website were around 0.007513148. **Oversampling**, on the other hand, involves creating new data for the minority class to balance the dataset. This had a better result (see later). We can sample randomly or with some intelligence behind it. Both case were tested. For the undersampling, we used k-means to create 193 clusters of the majority class and select 193 data from it. For the oversampling, the SMOTE (Synthetic Minority Oversampling Technique) method was chosen because it avoid overfitting by interpolating new instances between existing minority class instances. All these methods where tested in the TestEverything.ipynb script.
@@ -69,8 +72,8 @@ We didn't use the accuracy metric, even if it is a common and simple metric it i
 Those metrics are used to have an idea of the performance. Once we are happy with the performance of a model, we use it to predict value from the test dataset (without the target) and evaluate it on the website. Usually the score on the website are around 0.66666 whereas for the same model with our metrics are between 0.8 and 0.98. This difference could be explained with the phenomena of overfitting. 
 
 
-## Feature Engineering
-### Preprocessing
+# Feature Engineering
+## Preprocessing
 We first need to set up a reference score with barely untouched data. Some processing might be still necessary in order to train a model.
 
 As first easy step, we can counts the number of unique entries in each column of our training dataset, and then identifies columns with only one unique value. These columns can be dropped from both the training and testing datasets, as they do not provide any useful information for model training.
@@ -85,7 +88,7 @@ Some model behave differently regarding discrete value (usually represented inte
 
 Finally, to avoid redundant information with Value column (absolute value of 'Amount' column), we can create a new binary column called "Expense", which indicates whether a transaction is an expense (Amount is negative) or not. The "Amount" column is then dropped, as its information is now captured by the "Expense" column.
 
-### Base Score Evaluation
+## Base Score Evaluation
 
 We can now evaluate on Xente website how our base preprocessed dataset performs with different classifier models such as RandomForestClassifier, TreeClasifier and XGBoostClassifier. We will keep training on those three models in this report in order to measure and compare performance with different dataset manipulation, part of the feature engineering process. 
 
@@ -100,7 +103,7 @@ This yield the following result which we can base our future training to improve
 After some investigation and using the feature description provided by Xente we see that some features have unique identifier. Those being unique may lead to inconclusive result when we're predicting completely new values which is the goal of the model. Therefore we can drop the following column: `TransactionId`, `BatchId`, `AccountId`, `CustomerId`, `SubscriptionId`. This may be potential target leakage if we're trying to predict that an accountId is suspect to a fraud we need to know if the latter has been involved in the past with a fraud transaction.
 
 
-### Naive approach
+## Naive approach
 
 Removing unique IDs features yields definitely better results for the RandomForest and XGBoost model as shown in the following table:
 
@@ -116,7 +119,7 @@ The MI score ranges from 0 to infinity. A score of 0 indicates that the two vari
 
 In our context we will evaluate features dependency regarding the target value being the fraud result.
 
-### Feature Analysis
+## Feature Analysis
 As a first step we can investigate how the mean and standard deviation value evolve regarding the following features: `ProductId`, `Expense`, `ProviderId`, `ProductCategory`, `ChannelId`, `PricingStrategy`.
 
 As some of those features are categorical, it is recommended to use One-hot encoding. It is a technique used to convert categorical variables into numerical format by creating binary columns (0s and 1s) for each category of the variable. When the categorical variable has no inherent order, such as colors or cities, one-hot encoding is appropriate. Since there is no meaningful way to rank or order these categories, creating separate binary columns ensures that the machine learning model does not assume any ordinal relationship between them.
@@ -130,7 +133,7 @@ After some data maninulation and programming we have the following MI score for 
 [![](https://hackmd.io/_uploads/S1CtYvB4h.png)
 ](https://)
 
-### Results
+## Results
 We definitely see that from `ChannelId_1` and below features the MI scores is really low and is more likely to induce missleading to our model. We can see the difference between keeping all features, feature with a MI score greater than 0.001 and finally features with MI score greather than 0.0001 which yield the best result with precission rate above 78% as shown in the following table:
 
 
@@ -146,8 +149,18 @@ We definitely see that from `ChannelId_1` and below features the MI scores is re
 | TreeClasifier      | 0.643      | 0.596 |Features with MI Scores > 0.0001
 | XGBClassifier      | 0.704    | 0.655  | Features with MI Scores > 0.0001
 
+# Unbalance Dataset
 
-## Model used
+## K-Mean Undersampling
+
+## SMOTE Oversampling
+
+## Results
+
+# Conclusion
+
+
+Model used
 Decision Tree Classifier
 Random Forest Classifier
 XGBoost Classifier
