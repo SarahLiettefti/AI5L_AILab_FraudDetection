@@ -4,6 +4,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import mean_absolute_error
 import datetime as dt
 from math import ceil
+from sklearn.feature_selection import mutual_info_classif
+import matplotlib.pyplot as plt
 pd.set_option('max_colwidth', None)
 
 def score_dataset(X_train, X_valid, y_train, y_valid):#fucntion to test but have to improve
@@ -105,3 +107,17 @@ def getscoreforcsv(index_val, preds_val, name_file = "resultsfile.csv"):
     df.to_csv(n, index=False)
     print("done")
     return df
+
+def make_mi_scores(X, y):
+    mi_scores = mutual_info_classif(X, y)
+    mi_scores = pd.Series(mi_scores, name="MI Scores", index=X.columns)
+    mi_scores = mi_scores.sort_values(ascending=False)
+    return mi_scores
+
+def plot_mi_scores(scores):
+    scores = scores.sort_values(ascending=True)
+    width = np.arange(len(scores))
+    ticks = list(scores.index)
+    plt.barh(width, scores)
+    plt.yticks(width, ticks)
+    plt.title("Mutual Information Scores")
