@@ -132,7 +132,7 @@ Furthermore, some machine learning algorithms, such as linear regression or logi
 
 After some data maninulation and programming we have the following MI score for our 44 features:
 
-![](imageFraud\FeatureAnalysisMI.png)
+![](/imageFraud/FeatureAnalysisMI.png)
 
 ## Results
 We can observe on the previous figure that for `ChannelId_1` and below features, the MI score is low and more likely to lead to misleading results in our model. We compare the performance of models trained with all features, features with an MI score greater than 0.001, and features with an MI score greater than 0.0001. The latter approach yields the best results, with a precision rate above 78%, as shown in the following table:
@@ -152,7 +152,7 @@ We can observe on the previous figure that for `ChannelId_1` and below features,
 
 Here is Xente score screenshot:
 
-![](imageFraud\Results078.png)
+![](/imageFraud/Results078.png)
 The result mentioned above was obtained using the unbalanced dataset.
 
 # Models
@@ -163,11 +163,11 @@ We used four model for this project : Decision Tree Classifier, Random Forest Cl
 *This section on decision tree does not deal with unbalanced data.*
 The parameter we played with for the decision tree classifier is the maximum leaf nodes. Chosing the correct one help to avoid overfitting a model. It was done by training models with different `max_leaf_nodes` and evaluated with our metrics. We the took the best performing ones and tested with the website metrics.
 
-![](imageFraud\DecisionTreeClassifierGraph.png)
+![](/imageFraud/DecisionTreeClassifierGraph.png)
 
 We can see a level between 22 and 28. We also wanted to see what what was happening around 4 and 7. This were the results : 
 
-![](imageFraud\DecisionTreeClassifierResult.png)
+![](/imageFraud/DecisionTreeClassifierResult.png)
 
 We choose to continue testing the decision tree model with maximum 6 leaf. We were surprise by the website result not being bad, knowing that we didn't deal with the unbalanced data yet and only did minimal feature engineering.
 
@@ -188,10 +188,10 @@ At this point, we also saw that and running the same code and training the same 
 ## Random Forest Classifier
 We tried to optimze its criterion and number of tree parameters. We later tried to optimize the positive weight we could use to deal with the unbalanced data.
 
-![](imageFraud\RandomForestC1.png)
-![](imageFraud\RandomForestC2.png)
-![](imageFraud\RandomForestC3.png)
-![](imageFraud\RandomForestC4.png)
+![](/imageFraud/RandomForestC1.png)
+![](/imageFraud/RandomForestC2.png)
+![](/imageFraud/RandomForestC3.png)
+![](/imageFraud/RandomForestC4.png)
 
 After evaluation, we concluded that it was best to use the Entropy or log loss criterion (and avoid the gini) and to limit the Forest to 36 trees. 
 
@@ -215,7 +215,7 @@ It is a model that can deal with unbalanced data with a positive weight. The opt
 
 Optimization of the positive weight : 
 
-![](imageFraud\XGBoostClasifier.png)
+![](/imageFraud/XGBoostClasifier.png)
 
 Here are more results : 
 |n|Model|Description|PublicScore|PrivateScore|Precision|Recall|F1-score|LogLoss|Mcc|MeanOurMetrics|
@@ -228,20 +228,20 @@ The third model show an example when the performance on the training set is not 
 
 ## Logistic regression
 It was only tested with the random upsampling and undersampling and perform so poorly that we didn't went further.
-![](imageFraud\BJBBHI84h.png)
-![](imageFraud\LogisticRegression.png)
+![](/imageFraud/BJBBHI84h.png)
+![](/imageFraud/LogisticRegression.png)
 
 
 
 ## K-Mean Undersampling
 We already reviewed it in the models section but here is a summary : 
 
-![](imageFraud\Kmeans.png)
+![](/imageFraud/Kmeans.png)
 
 Undersampling is not a solution for our dataset because there is not enough data for the models to learn from it. It is a good example of overfitting, when the evaluation on the validation data is much better than on the test data. 
 
 ## SMOTE Oversampling
-![](imageFraud\SMOTE.png)
+![](/imageFraud/SMOTE.png)
 
 It gaves us some good results for the Random Forest Classifier but not for the others models. 
 
