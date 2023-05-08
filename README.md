@@ -1,4 +1,8 @@
 # AI5L Artificial Intelligence Report
+For now, all the code is in the branch `cleac`
+## Student
+LIETTEFTI LENS Sarah [18253]
+MITROVIC Nikola [18365]
 
 # Introduction
 
@@ -6,21 +10,25 @@ In today's digital age, the rapid growth of online transactions has brought abou
 
 This is a case of binary classification, meaning that the model has to accurately classify input data into one of the two classes based on a set of features. The dataset contains transactions and the model has to predict if it is a fraud or not. 
 
-The challenge involves developing an effective fraud detection model that can identify potentially fraudulent transactions by analyzing and learning from historical transaction data. To accomplish this task, we will explore various aspects of the dataset, perform data preprocessing and feature engineering to extract relevant information, and compare the performance of different machine learning models to identify the most suitable approach.
-
 This report will present a detailed analysis of the Xente transaction dataset, including data preprocessing, feature engineering techniques employed, and the rationale behind each decision. Furthermore, we will evaluate the performance of our chosen model, comparing it with various other models to showcase its strengths and limitations. Finally, we will emphasize the importance of scientific reasoning and its role in enhancing the overall effectiveness of our fraud detection model.
 
 By the end of this report, we aim to provide a comprehensive understanding of the steps involved in developing a robust fraud detection model, as well as insights into the performance and suitability of different machine learning techniques for this task. Our findings will contribute to the ongoing efforts to improve the security of online transactions and mitigate the risks associated with financial fraud.
 
 
 ## Specificity of the dataset
-The training dataset is unbalanced, meaning that there is a minority class that is significantly  less represented in the dataset than the other class. In this case, the minority class is the frauds with only 193 data compared to 95469 non-frauds. Although this is expected in real-life scenarios, it can lead to an overly sensitive model towards the majority class and produce biased and inaccurate predictions.
+The present study reveals an unbalanced training dataset where one class is substantially underrepresented compared to the other. Specifically, the minority class corresponds to fraudulent instances, which are only represented by 193 data samples, while the majority class encompasses 95469 non-fraudulent samples. While this is a common issue in real-life scenarios, it can lead to a model that is overly sensitive towards the majority class and produce biased and inaccurate predictions.
+
 ![](https://hackmd.io/_uploads/BJhusXBN3.png)
-To address this issue, we have two main options:
-1. Using a **model** that take into account the imbalanced data by assigning **weights** to each class. By setting a positive weight for a class, it increases the penalty for misclassifying instances of that class during training. Making the model pay more attention to the minority class and potentially improving its ability to correctly classify instances of it. Random Forest and XGBoost are examples of such models that will be used in this project. We found that the optimal positive weight is 22. It was calculates by the $\sqrt{N_{nonfraud} \over N_{fraud}}$ . Several weights have been tested with XGBoost model in the [SecondModels.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/SecondModels.ipynb), and this one had the best performances. 
-2. **Sampling** the dataset to balance the number of instances in each class. There are two types of sampling methods: **undersampling** and **oversampling**. 
-    - **Undersampling** involves removing instances from the majority class, but this may not perform well when the remaining data is not sufficient for the model to learn from. In this case, it only left us with 386 instances, which is not enough. The result from the website were around 0.007513148. We can sample randomly or with some intelligence behind it. For the not random sampling, we used k-means to create 193 clusters of the majority class and select 1 data from each cluster. Both case were tested and had terrible performances.
-    - **Oversampling**, on the other hand, involves creating new data for the minority class, to balance the dataset. This had a better result (see later). We also tested to sample randomly and with some intelligence behind it with SMOTE (Synthetic Minority Oversampling Technique). This method of SMOTE was chosen because it avoids overfitting by interpolating new instances between existing minority class instances. 
+
+
+To tackle this challenge, we have identified two main approaches:
+
+1. Using a model that accounts for the imbalanced data by assigning weights to each class. By assigning a positive weight to a class, it increases the cost for misclassifying instances of that class during training. This approach enables the model to pay more attention to the minority class, potentially improving its ability to correctly classify instances of it. Notably, Random Forest and XGBoost are examples of such models that will be implemented in this project. The optimal positive weight is calculated using the square root of the ratio of non-fraudulent to fraudulent instances (i.e., $\sqrt{N_{nonfraud} \over N_{fraud}}$), and it was found to be 22. We have tested several weights using the XGBoost model in the [SecondModels.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/SecondModels.ipynb), and show the best performances. 
+
+2. Employing data sampling techniques to balance the number of instances in each class. Two main sampling methods are available: undersampling and oversampling.
+    - **Undersampling** entails removing instances from the majority class. However, this approach may not perform well if the remaining data is insufficient for the model to learn from. In this study, undersampling resulted in only **386 instances**, which is inadequate. We tested both random and intelligent undersampling methods. Specifically, we utilized k-means to generate **193 clusters** from the majority class and selected one data point from each cluster. However, both methods yielded poor performances with a resulting score of approximately **0.007513148** obtained from the website.
+    - **Oversampling**, in contrast, involves generating new data for the minority class to balance the dataset. This method showed better results compared to undersampling. We also tested random and intelligent oversampling using **SMOTE (Synthetic Minority Oversampling Technique)**. SMOTE was selected as it interpolates new instances between existing minority class instances, thereby avoiding overfitting.
+
 
 All these methods were tested in the [TestEverything.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/TestEverything.ipynb).
 
@@ -32,10 +40,10 @@ The result were balanced but the best that were tested on the website were :
 | Random Forest Classifier| 22|Basic data and 36 decision three and the criterion = Entropy| 0.703704       | 0.654867	
 | Random Forest Classifier  |500| Basic data and 36 decision three and the criterion = Entropy| 0.678571       | 0.666667
 
-We also got a 0.78 score (the website one) with very basic model and featuring engineering. But we couldn't reach this score again, even though we were doing everything to improve the model.
+The initial model, which utilized basic features engineering, obtained a score of 0.78 on the website. However, despite making efforts to improve the model, we were unable to replicate this score.
 
 ### How we evaluate
-It is important to use the right metric to evaluate our models to have the right idea on its performance. In our case, we are doing a binary classification with unbalanced dataset. For that we are using five metrics (plus de mean of those). They are calculated and explain in the notebook [EvaluationMetric.ipynb](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/EvaluationMetric.ipynb). 
+Using the appropriate metrics is crucial to accurately evaluate the performance of our models. Given the binary classification task and unbalanced dataset in our study, we employed five metrics, including the mean of the five metrics, to assess model performance. These metrics are fully explained in the notebook.k [EvaluationMetric.ipynb](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/EvaluationMetric.ipynb). 
 
 
 We use those to have an idea of the performance of the models. We always split the data in training set and validation set before fitting it to the model to avoid target leakage.
@@ -45,11 +53,10 @@ We use those to have an idea of the performance of the models. We always split t
 4. Log loss : This metric measures the difference between the probabilities of the model’s predictions and the probabilities of observed reality. The goal of this metric is to estimate the probability that an example has a positive class. More the log Loss is near 0 better it is.
 5. Matthews Correlation Coefficient (MCC) : is designed to evaluate even models trained on unbalanced dataset. It ranges between $-1$ and $+1$. We want it to be near $+1$ since it indicates a correlation between actual observed values and predictions made by our model.
 
-The mean of those values (except of the Log loss because it is close to 0) is used to just have a general idea of the performance.
 
-We didn't use the accuracy metric, even if it is a common and simple metric because it is not recommended for our case of unbalanced data. If the model only predicts 0, it can have an accuracy of 99,7% while having failed to predict all the frauds. 
+The mean of the computed metrics, except for the Log Loss metric, is used to provide a general idea of the model's performance since the Log Loss value is close to zero. The accuracy metric is not used in this study as it is not recommended for unbalanced data since a model that predicts only one class can have a high accuracy while failing to predict the minority class.
 
-Those metrics are used to have an idea of the performance. Once we are happy with the performance of a model, we use it to predict value from the test dataset (without the target) and evaluate it on the website. Usually the score on the website are around 0.66666 whereas for the same model with our metrics are between 0.8 and 0.98. This difference could be explained with the phenomena of overfitting. 
+These metrics are employed to obtain a sense of model performance. Once we are satisfied with the model's performance, we use it to predict values from the test dataset (excluding the target variable) and evaluate it on the website. Notably, the scores obtained on the website are usually around **0.66666**, while our metrics indicate scores ranging between **0.8** and **0.98** for the same models. This difference could be attributed to overfitting, where the model may perform well on the training data but poorly on unseen data.
 
 
 # Feature Engineering
@@ -81,7 +88,7 @@ This yield the following result which we can base our future training to improve
 | TreeClasifier | 0.678       |  0.666 |Stock
 | XGBClassifier      | 0.666       | 0.682  |Stock
 
-After some investigation and using the feature description provided by Xente, we see that some features have (almost) unique identifier. Those columns are : `TransactionId`, `BatchId`, `AccountId`, `CustomerId`, `SubscriptionId`. The problem with it is that the model could learn, for example, that a certain client, identified with his CustomerId, often do frauds. This is a good thing to predict fraud for this specific customer, but it doesn't help for the transaction of new customer. This could generate target leakage, training with an information we don't have yet (if the client fraud in the past). To avoid it, those columns could be dropped. We tested some models with those columns and without.
+After conducting some investigation and using the feature description provided by Xente, we discover that some features have almost unique identifiers, including `TransactionId`, `BatchId`, `AccountId`, `CustomerId`, and `SubscriptionId`. However, including these columns in the model may result in target leakage, where the model is trained using information not yet available during prediction, such as a customer who previously committed fraud. While this can improve fraud detection for specific customers, it is not useful for new customers. Therefore, we drop these columns to avoid target leakage. We tested models with and without these columns to compare their performance. We can see in the following table the number of unique values for the mentionned features:
 
 |Column|Unique Value|
 | ----------- | ----------- |
@@ -106,18 +113,18 @@ There is definitely room for improvement and this lead us to analyze feature tha
 
 The MI score ranges from 0 to infinity. A score of 0 indicates that the two variables are completely independent, meaning there is no relationship between them. As the score increases, it indicates a stronger dependency between the variables. Higher MI scores suggest that the relationship between the variables can potentially provide more useful information for building predictive models.
 
-In our context, we will evaluate features dependency regarding the target value being the fraud result. You can see it in the [EvaluationFeatures.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/EvaluationFeatures.ipynb).
+In our context, we will evaluate features dependency regarding the target value being the fraud result, as shown in the [EvaluationFeatures.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/EvaluationFeatures.ipynb).
 ![](https://hackmd.io/_uploads/S1ZafrIV2.png)
 
-We will later evaluate how our models perform when removing some features. The goal is to identified the noices. Those kind of data could be unuseful for the prediction, but by being present in the training of the model, it could take too much space and the useful features could be drown into it. Making it difficult for the model to learn from it. 
+Later on, we will evaluate how our models perform when removing certain features. The goal is to identify noise in the data that may not be useful for fraud prediction. By removing noisy features, we can reduce the dimensionality of the data and prevent the useful features from being overshadowed, which may make it difficult for the model to learn from the data.
 
 
-### Feature Analysis
-This step is trying to create new features and evaluate if it improve the model performances. We are also dealing with the categorical features at this stage.
+## Feature Analysis
+In this step, we attempt to create new features and evaluate their impact on model performance. We also handle categorical features in this stage.
 
-As a first step, we can investigate how the mean and standard deviation value evolve regarding the following features: `ProductId`, `Expense`, `ProviderId`, `ProductCategory`, `ChannelId`, `PricingStrategy`.
+As a first step, we investigate how the mean and standard deviation values of the following features change: `ProductId`, `Expense`, `ProviderId`, `ProductCategory`, `ChannelId`, `PricingStrategy`.
 
-As some of those features are categorical, it is recommended to use One-hot encoding. It is a technique used to convert categorical variables into numerical format by creating binary columns (0s and 1s) for each category of the variable. When the categorical variable has no inherent order, such as colors or cities, one-hot encoding is appropriate. Since there is no meaningful way to rank or order these categories, creating separate binary columns ensures that the machine learning model does not assume any ordinal relationship between them.
+As some of those features are categorical, it is recommended to use One-hot encoding. This technique is used to convert categorical variables into numerical format by creating binary columns (0s and 1s) for each category of the variable. When the categorical variable has no inherent order, such as colors or cities, one-hot encoding is appropriate. Since there is no meaningful way to rank or order these categories, creating separate binary columns ensures that the machine learning model does not assume any ordinal relationship between them.
 
 One-hot encoding is only feasible when the categorical variable has a limited number of distinct categories. If the variable has too many categories, it can result in a large number of columns, which may lead to increased memory usage and longer training times. In our case categorical features are `ProviderId`, `ProductCategory`, `ChannelId` and `PricingStrategy` that contains respectively 6, 9, 4 and 4 unique values which are low enough to be one-hot encoded.
 
@@ -129,7 +136,7 @@ After some data maninulation and programming we have the following MI score for 
 ](https://)
 
 ## Results
-We definitely see that from `ChannelId_1` and below features the MI scores is really low and is more likely to induce missleading to our model. We can see the difference between keeping all features, feature with a MI score greater than 0.001 and finally features with MI score greather than 0.0001 which yield the best result with precission rate above 78% as shown in the following table:
+We can observe on the previous figure that for `ChannelId_1` and below features, the MI score is low and more likely to lead to misleading results in our model. We compare the performance of models trained with all features, features with an MI score greater than 0.001, and features with an MI score greater than 0.0001. The latter approach yields the best results, with a precision rate above 78%, as shown in the following table:
 
 
 | Model       | Public Score | Private Score | Dataset |
@@ -147,24 +154,26 @@ We definitely see that from `ChannelId_1` and below features the MI scores is re
 Here is Xente score screenshot:
 
 ![](https://hackmd.io/_uploads/B1zYsOSN3.png)
-Those result were by using the unbalanced data. 
+The result mentioned above was obtained using the unbalanced dataset.
 
 # Models
-We used four model for thes projest : Decision Tree Classifier, Random Forest Classifier, XGBoost Classifier, Logistic Regression. The opitmisation of those are done in the [SecondModels.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/SecondModels.ipynb) were we tested several paramters to find the best. We then evaluated and compared several models with several stage of the feature engineering in the [TestEverything.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/TestEverything.ipynb).
+We used four model for this project : Decision Tree Classifier, Random Forest Classifier, XGBoost Classifier, Logistic Regression. The optimisation of these model was done in the [SecondModels.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/SecondModels.ipynb) where we tested several parameters to find the best ones. We then evaluated and compared several models at different stages of the feature engineering process in the [TestEverything.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/TestEverything.ipynb).
 
 
-## Decision Tree Classifier
-(this is with unbalanced data)
-The parameter we played with for the decision tree classifier is the maximum leaf nodes. Choising the correct one help to avoid overfitting a model. It was done by training models with different `max_leaf_nodes` and evaluated with our metrics. We the took the best performing ones and tested with the website metrics.
+## Decision Tree Classifier 
+*This section on decision tree does not deal with unbalanced data.*
+The parameter we played with for the decision tree classifier is the maximum leaf nodes. Chosing the correct one help to avoid overfitting a model. It was done by training models with different `max_leaf_nodes` and evaluated with our metrics. We the took the best performing ones and tested with the website metrics.
 
 ![](https://hackmd.io/_uploads/BydudHLV2.png)
+
 We can see a level between 22 and 28. We also wanted to see what what was happening around 4 and 7. This were the results : 
+
 ![](https://hackmd.io/_uploads/SkaZYH8V2.png)
 
-We choose to continue testing the decision tree model with maximum 6 leaf. We were surprise by the website result not being bad, knowing that we didn't dealt with the unbalanced data yet and only did minimal feature engineering. 
+We choose to continue testing the decision tree model with maximum 6 leaf. We were surprise by the website result not being bad, knowing that we didn't deal with the unbalanced data yet and only did minimal feature engineering.
 
-1. This is the score after doing more featuring engineering (but stillunbalanced data): 
-2. We then tested it with deleting thefeature with a low MI and so how it got much worst. 
+1. This is the score after doing more featuring engineering (with unbalanced data): 
+2. We then tested it with deleting the feature with a low MI score and saw how it got much worst. 
 3. We then tried to balance the dataset undersampleing with K-Means. We created 193 cluster of the majority class and choose a value of each cluster. This gave us a perfect exemple of a overfitting.  
 4. The SMOTE was used on it but it performed badly.
 
@@ -179,15 +188,17 @@ At this point, we also saw that and running the same code and training the same 
 
 ## Random Forest Classifier
 We tried to optimze its criterion and number of tree parameters. We later tried to optimize the positive weight we could use to deal with the unbalanced data.
+
 ![](https://hackmd.io/_uploads/BJ8nRSUNn.png)
 ![](https://hackmd.io/_uploads/BJpn0SU42.png)
 ![](https://hackmd.io/_uploads/By1p0HUV2.png)
 ![](https://hackmd.io/_uploads/rk_CArU4h.png)
-After evaluation, we conclude that it was best to use the Entropy or log loss criterion (and avoid the gini) and to limit the Forest to 36 trees. 
+
+After evaluation, we concluded that it was best to use the Entropy or log loss criterion (and avoid the gini) and to limit the Forest to 36 trees. 
 
 1. In the table below, we see that not dealing with the unbalanced data give a better PublicScore than upsampling it randomly. 
-2. Upsampling is better thant under sampling for the resaon discuss earlier
-3. Unersampling is a good case of overfitting
+2. Upsampling is better than undersampling for the resaon discussed earlier
+3. Unersampling results in overfitting
 4. Have better result when giving a positive weight of 22 to balance the data.
 
 
@@ -201,19 +212,20 @@ After evaluation, we conclude that it was best to use the Entropy or log loss cr
 Other evaluations can be find in the [TestEverything.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/TestEverything.ipynb).
 
 ## XGBoost Classifier
-It is a model that can deal with unbalanced data with a positive waight. The optimization of it has been done in the [SecondModels.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/SecondModels.ipynb). The optimized one id 22 : $\sqrt{N_{nonfraud} \over N_{fraud}}$
+It is a model that can deal with unbalanced data with a positive weight. The optimization of it has been done in the [SecondModels.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/SecondModels.ipynb). The optimized one is 22 given by the following formula: $\sqrt{N_{nonfraud} \over N_{fraud}}$
 
 Optimization of the positive weight : 
+
 ![](https://hackmd.io/_uploads/SJMh-8U42.png)
 
-Here are more result : 
+Here are more results : 
 |n|Model|Description|PublicScore|PrivateScore|Precision|Recall|F1-score|LogLoss|Mcc|MeanOurMetrics|
 |--|---|---|---|---|---|---|---|---|---|---|
 |1|XGBClassifier w22|with minimul feature engineering|0.677419|0.676923|0.822222|0.925|0.870588|0.016578|0.871874|0.872421|
 |2|XGBClassifier w22|More feature engineering|0.666667|0.682540|0.880952|0.880952|0.880952|0.015071|0.880743|0.666667|0.880900|
 |3|XGBClassifier w22|Cleaning low MI|**0.711864**|**0.715447**|0.465116	|0.500	|0.481928	|0.064805	|0.481344|	0.482097|
 
-The third model show an example when the performance on the training set is not great but it perform well on the website score. This is also an exemple of model that we will run several time (with the exact same code) and have significantly diffrent performance metrics each time. 
+The third model show an example when the performance on the training set is not great but it performs well on the website score. This is also an exemple of model that we will run several time (with the exact same code) and have significantly different performance metrics each time. 
 
 ## Logistic regression
 It was only tested with the random upsampling and undersampling and perform so poorly that we didn't went further.
@@ -223,8 +235,10 @@ It was only tested with the random upsampling and undersampling and perform so p
 
 
 ## K-Mean Undersampling
-We already reviewed it the models section but here is a summary : 
+We already reviewed it in the models section but here is a summary : 
+
 ![](https://hackmd.io/_uploads/r15a3rUN2.png)
+
 Undersampling is not a solution for our dataset because there is not enough data for the models to learn from it. It is a good example of overfitting, when the evaluation on the validation data is much better than on the test data. 
 
 ## SMOTE Oversampling
@@ -235,12 +249,15 @@ It gaves us some good results for the Random Forest Classifier but not for the o
 
 # Conclusion
 
-Finally, we will emphasize the importance of scientific reasoning and its role in enhancing the overall effectiveness of our fraud detection model. 
+## Lessons Learned
+In this project, we found that scientific reasoning played a crucial role in enhancing the effectiveness of our fraud detection model. Surprisingly, we discovered that deleting noisy features sometimes yielded better results than dealing with unbalanced data. Additionally, we observed that incorporating a positive weight of 22 and using SMOTE were effective techniques to improve model performance. It is essential to optimize model parameters while also knowing when to stop to avoid overfitting. In some cases, **less can be more**, and removing certain features can actually enhance model performance, hence the importance of selecting the data we use.These findings provide valuable insights into the performance and suitability of various machine learning techniques for fraud detection. 
 
-We saw that sometimes, it is better to delete the noices features than even dealing with the unbalanced data (that was surprising). 
-Apart for that, we saw that adding a positive weight of 22 was very effective to improve the performance of our models as well as using the SMOTE. 
-It is important to optize the parameters of the models but we also need to learn when to stop to not go too far. Sometime doing less is more.
-
-Insights into the performance and suitability of different machine learning techniques for this task.
+While solutions for handling unbalanced data, such as undersampling or upsampling, can improve model performance to some extent, they cannot perform miracles when dealing with extremely limited transaction data. In cases where the dataset is highly imbalanced, such as our dataset with only 193 frauds out of +95000 transactions. In real-life applications in finance, fraud is likely to be unbalanced compared to regular transactions, but large banks and companies typically have access to much larger datasets. Even if the fraud ratio is very low, such as 2%, having millions of transactions can still provide enough fraud data to train on, and this can significantly improve model performance. Therefore, having access to large and diverse datasets is critical for developing accurate fraud detection models in finance and other industries.
 
 
+## Further Investigation
+There is certainly room for improvement as there are still many features that we can engineer to improve model performance. For instance, we can investigate how the frequency of transactions for specific features, such as `ProductCategory` or `ProviderId`, may influence the target result.
+
+Another idea could be to compute the cumulative sum per day per product category or an other categorical feature. It can capture the trend of transactions for each feature over time. This can potentially provide valuable information for fraud detection, as it may be the case that fraudulent transactions have different temporal patterns compared to legitimate transactions.
+
+Additionally, we did not apply any rescaling during the training process since we had goo results, but it is something we should absolutely consider in future iterations. Rescaling using min max alogritm for example can normalize the range of values in different features, which  is a crucial step as it can prevent certain features from dominating the learning process, improve model convergence, and make features more comparable, even if they are measured on different scales or units. Additionally, some optimization algorithms used in AI, such as gradient descent, can converge more quickly when input features are normalized. Therefore, rescaling features is highly recommended in AI and should be considered in any machine learning project.
