@@ -114,7 +114,7 @@ There is definitely room for improvement and this lead us to analyze feature tha
 The MI score ranges from 0 to infinity. A score of 0 indicates that the two variables are completely independent, meaning there is no relationship between them. As the score increases, it indicates a stronger dependency between the variables. Higher MI scores suggest that the relationship between the variables can potentially provide more useful information for building predictive models.
 
 In our context, we will evaluate features dependency regarding the target value being the fraud result, as shown in the [EvaluationFeatures.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/EvaluationFeatures.ipynb).
-![](imageFraud\NaiveApproch.png)
+![](/imageFraud/NaiveApproch.png)
 
 Later on, we will evaluate how our models perform when removing certain features. The goal is to identify noise in the data that may not be useful for fraud prediction. By removing noisy features, we can reduce the dimensionality of the data and prevent the useful features from being overshadowed, which may make it difficult for the model to learn from the data.
 
