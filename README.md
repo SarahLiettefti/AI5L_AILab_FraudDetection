@@ -153,7 +153,7 @@ We can observe on the previous figure that for `ChannelId_1` and below features,
 Here is Xente score screenshot:
 
 ![](/imageFraud/Results078.png)
-The result mentioned above was obtained using the unbalanced dataset.
+The result mentioned above was obtained using the unbalanced dataset. (If you don't beleive us test it by yourself ;p this is the link to the file.)[https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/main/RandomForestBestResult.csv]
 
 # Models
 We used four model for this project : Decision Tree Classifier, Random Forest Classifier, XGBoost Classifier, Logistic Regression. The optimisation of these model was done in the [SecondModels.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/SecondModels.ipynb) where we tested several parameters to find the best ones. We then evaluated and compared several models at different stages of the feature engineering process in the [TestEverything.ipynb script](https://github.com/SarahLiettefti/AI5L_AILab_FraudDetection/blob/clean/TestEverything.ipynb).
